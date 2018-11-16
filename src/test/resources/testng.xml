@@ -1,8 +1,12 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="Products Management" verbose="1" >
-    <test name="Create New Product [Chrome]" >
-        <!--configure test to execute testing script using Chrome browser-->
+    <test name="Create New Product [Firefox]" >
+       <classes>
+           <class name="myprojects.automation.assignment4.tests.CreateProductTest">
+           </class>
+       </classes>
+
     </test>
 
     <!--Prepare test for firefox and IE browsers-->

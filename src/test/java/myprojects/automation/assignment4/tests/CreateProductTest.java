@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 public class CreateProductTest extends BaseTest {
 
-    @Test
+    @Test(dataProvider = "loginData")
     public void createNewProduct(String login, String password) {
          GeneralActions.login(login, password);
          GeneralActions.createProduct(ProductData.generate());
