@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -17,28 +18,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class BaseTest {
 
     protected EventFiringWebDriver driver;
-
-    @BeforeClass
-    // TODO use parameters from pom.xml to pass required browser type
-    // public void setUpBrowser(String browser) {
-    public void setUpBrowser() {
-        driver = new EventFiringWebDriver(getDriver("firefox"));
-        driver.register(new EventHandler());
-
-        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-        driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
-        driver.manage().window().maximize();
-
-        PageElementAction.setDriverConfig(driver);
-    }
-
-    @AfterClass
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
-
+    protected GeneralActions actions;
     private WebDriver getDriver(String browser) {
         switch (browser) {
             case "firefox":
@@ -61,17 +41,51 @@ public abstract class BaseTest {
         }
     }
 
+    /**
+     * @param resourceName The name of the resource
+     * @return Path to resource
+     */
     private String getResource(String resourceName) {
         try {
-           return Paths.get(BaseTest.class.getResource(resourceName).toURI()).toFile().getPath();
+            return Paths.get(BaseTest.class.getResource(resourceName).toURI()).toFile().getPath();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
         return resourceName;
     }
 
+    /**
+     * Prepares {@link WebDriver} instance with timeout and browser window configurations.
+     *
+     * Driver type is based on passed parameters to the automation project,
+     * creates {@link ChromeDriver} instance by default.
+     *
+     */
+    @BeforeClass
+    // TODO use parameters from pom.xml to pass required browser type
+    public void setUp() {
+        driver = new EventFiringWebDriver(getDriver(BrowserType.FIREFOX));
+        driver.register(new EventHandler());
+
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
+        driver.manage().window().maximize();
+
+        actions = new GeneralActions(driver);
+    }
+
+    /**
+     * Closes driver instance after test class execution.
+     */
+    @AfterClass
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
     @DataProvider(name = "loginData")
-    protected Object[][] loginData() {
-        return new Object[][]{{"login", "webinar.test@gmail.com"}, {"password", "Xcg7299bnSmMuRLp9ITw"}};
+    protected Object[][] loginData () {
+        return new Object[][]{{"webinar.test@gmail.com","Xcg7299bnSmMuRLp9ITw"}};
     }
 }

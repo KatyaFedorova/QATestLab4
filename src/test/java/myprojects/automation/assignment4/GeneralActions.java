@@ -2,34 +2,66 @@ package myprojects.automation.assignment4;
 
 import myprojects.automation.assignment4.model.ProductData;
 import myprojects.automation.assignment4.utils.Properties;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
-import static com.sun.scenario.Settings.set;
+public class GeneralActions {
 
-public class GeneralActions extends PageElementAction {
+    private WebDriver driver;
+    private WebDriverWait wait;
+    private WebElement element;
 
-    public static void login(String login, String password) {
-        openUrl(Properties.getBaseAdminUrl());
-        getElement("[name = \"email\"]").set(login);
-        getElement("[name = \"passwd\"]").set(password);
-        getElement("[name = \"submitLogin\"]").click();
+    public GeneralActions(WebDriver driver) {
+        this.driver = driver;
+        wait = new WebDriverWait(driver, 30);
     }
 
-    public static void createProduct(ProductData newProduct) {
-        getElement("[id = \"subtab-AdminCatalog\"]").hover();
-        getElement("[id = \"subtab-AdminProducts\"]").click();
-        getElement("[id = \"page-header-desc-configuration-add\"]").click();
-        set("[id = \"form_step1_name_1\"]", newProduct.getName());
-        getElement("[id = \"tab_step3\"]").click();
-        set("[id = \"form_step3_qty_0\"]", String.valueOf(newProduct.getQty()));
-        getElement("[id = \"tab_step2\"]").click();
-        set("[id = \"form_step2_price\"]", String.valueOf(newProduct.getQty()));
-        getElement("[id = \"submit\"]").click();
-        getElement(".growl-message").verifyText("Настройки обновлены.");
-        getElement(".growl-close").click();
+    public void login(String login, String password) {
+        driver.get(Properties.getBaseAdminUrl());
+        set(By.name("email"), login);
+        set(By.name("passwd"), password);
+        click(By.name("submitLogin"));
     }
 
-    public static void logout() {
-        getElement(".employee_avatar_small").click();
-        getElement("[id = \"header_logout\"]").click();
+    public void createProduct(ProductData newProduct) {
+        click(By.cssSelector("[data-submenu=\"9\"]"));
+        click(By.id("page-header-desc-configuration-add"));
+        set(By.id("form_step1_name_1"), (newProduct.getName()));
+        click(By.id("tab_step3"));
+        set(By.id("form_step3_qty_0"), String.valueOf(newProduct.getQty()));
+        click(By.id("tab_step2"));
+        set(By.id("form_step2_price"), String.valueOf(newProduct.getPrice()));
+        click(By.cssSelector(".btn.btn-primary.js-btn-save"));
+        element = driver.findElement(By.cssSelector(".growl-message"));
+        wait.until(ExpectedConditions.visibilityOf(element));
+        Assert.assertEquals(element.getText(), "Настройки обновлены.");
+        click(By.cssSelector(".growl-close"));
+        wait.until(ExpectedConditions.invisibilityOf(element));
+    }
+
+    public void logout() {
+        click(By.cssSelector(".img-circle.person"));
+        findElement(By.id("header_logout"));
+        wait.until(ExpectedConditions.visibilityOf(element)).click();
+    }
+
+    public void findElement(By locator) {
+        element = driver.findElement(locator);
+    }
+
+    public void click(By locator) {
+        findElement(locator);
+        wait.until(ExpectedConditions.elementToBeClickable(element));
+        element.click();
+    }
+
+    public void set(By locator, String text) {
+        findElement(locator);
+        wait.until(ExpectedConditions.visibilityOf(element));
+        element.sendKeys(text);
     }
 }
