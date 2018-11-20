@@ -85,12 +85,12 @@ public class EventHandler implements WebDriverEventListener {
 
     @Override
     public void afterClickOn(WebElement element, WebDriver driver) {
+        CustomReporter.log("We have clicked on element ");
     }
 
     @Override
     public void beforeChangeValueOf(WebElement element, WebDriver driver, CharSequence[] keysToSend) {
-        String value = Arrays.stream(keysToSend).map(CharSequence::toString).collect(Collectors.joining());
-        CustomReporter.log(String.format("Change value of %s: %s\n", element.getTagName(), value));
+        CustomReporter.log(String.format("Change value of %s: %s\n", element.getTagName(), element.getAttribute("value")));
     }
 
     @Override

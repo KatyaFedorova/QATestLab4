@@ -28,7 +28,7 @@ public class ProductData {
 
     public String getPrice() {
         DecimalFormatSymbols separators = new DecimalFormatSymbols();
-        separators.setDecimalSeparator(',');
+        separators.setDecimalSeparator('.');
         return new DecimalFormat("#0.00", separators).format(price);
     }
 

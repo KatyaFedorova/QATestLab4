@@ -21,7 +21,7 @@ public class GeneralActions {
     }
 
     public void login(String login, String password) {
-        driver.get(Properties.getBaseAdminUrl());
+        openUrl(Properties.getBaseAdminUrl());
         set(By.name("email"), login);
         set(By.name("passwd"), password);
         click(By.name("submitLogin"));
@@ -35,7 +35,13 @@ public class GeneralActions {
         set(By.id("form_step3_qty_0"), String.valueOf(newProduct.getQty()));
         click(By.id("tab_step2"));
         set(By.id("form_step2_price"), String.valueOf(newProduct.getPrice()));
-        click(By.cssSelector(".btn.btn-primary.js-btn-save"));
+        click(By.cssSelector(".switch-input"));
+        checkSuccess();
+        click(By.cssSelector(".btn-primary.save.uppercase"));
+        checkSuccess();
+    }
+
+    private void checkSuccess() {
         element = driver.findElement(By.cssSelector(".growl-message"));
         wait.until(ExpectedConditions.visibilityOf(element));
         Assert.assertEquals(element.getText(), "Настройки обновлены.");
@@ -43,14 +49,45 @@ public class GeneralActions {
         wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
-    public void logout() {
-        click(By.cssSelector(".img-circle.person"));
-        findElement(By.id("header_logout"));
-        wait.until(ExpectedConditions.visibilityOf(element)).click();
+    public void checkVisibilityCreatedProduct(String productName) {
+        openUrl(Properties.getBaseUrl());
+        click(By.cssSelector(".all-product-link.pull-xs-left.pull-md-right.h4"));
+        set(By.cssSelector(".ui-autocomplete-input"), productName);
+        click(By.cssSelector("button[type = \"submit\"]"));
+        String searchResultName = getAttribute(By.cssSelector(".thumbnail-container .product-description a"), "text");
+        Assert.assertEquals(searchResultName, productName);
     }
 
-    public void findElement(By locator) {
+    public void checkProductProperty(ProductData productData) {
+        click(By.cssSelector(".thumbnail-container .product-description a"));
+        String productName = getText(By.cssSelector(".col-md-6 [itemprop = \"name\"]"));
+        Assert.assertEquals(productName, productData.getName().toUpperCase());
+        String productPrice = getAttribute(By.cssSelector(".col-md-6 [itemprop = \"price\"]"), "content");
+        Assert.assertEquals(productPrice, productData.getPrice());
+        String productQty = getText(By.cssSelector(".product-quantities span")).split(" ")[0];
+        Assert.assertEquals(productQty, String.valueOf(productData.getQty()));
+    }
+
+    //===================================== BaseMethods ================================================================
+
+    private void openUrl(String url) {
+        driver.get(url);
+    }
+
+    private void findElement(By locator) {
         element = driver.findElement(locator);
+    }
+
+    public String getAttribute(By locator, String attributeName) {
+        element = driver.findElement(locator);
+        wait.until(ExpectedConditions.visibilityOf(element));
+       return element.getAttribute(attributeName);
+    }
+
+    public String getText(By locator) {
+        element = driver.findElement(locator);
+        wait.until(ExpectedConditions.visibilityOf(element));
+       return element.getText();
     }
 
     public void click(By locator) {
@@ -62,6 +99,9 @@ public class GeneralActions {
     public void set(By locator, String text) {
         findElement(locator);
         wait.until(ExpectedConditions.visibilityOf(element));
+        if (!element.getAttribute("value").isEmpty()) {
+            element.clear();
+        }
         element.sendKeys(text);
     }
 }

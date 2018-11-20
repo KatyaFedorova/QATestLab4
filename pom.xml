@@ -26,7 +26,7 @@
                 <version>2.20.1</version>
                 <executions>
                     <execution>
-                        <id>default-test</id>
+                        <id>Create New Product [Firefox]</id>
                         <phase>test</phase>
                         <goals>
                             <goal>test</goal>

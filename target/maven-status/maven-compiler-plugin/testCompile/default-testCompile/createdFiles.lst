@@ -1,4 +1,3 @@
-myprojects/automation/assignment4/PageElementAction$Element.class
 myprojects/automation/assignment4/BaseTest.class
 myprojects/automation/assignment4/GeneralActions.class
 myprojects/automation/assignment4/utils/EnvironmentVariables.class
@@ -7,4 +6,3 @@ myprojects/automation/assignment4/utils/Properties.class
 myprojects/automation/assignment4/utils/logging/EventHandler.class
 myprojects/automation/assignment4/utils/logging/CustomReporter.class
 myprojects/automation/assignment4/tests/CreateProductTest.class
-myprojects/automation/assignment4/PageElementAction.class

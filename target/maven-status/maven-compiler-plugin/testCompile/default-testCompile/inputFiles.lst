@@ -1,8 +1,7 @@
-/home/katya/lecture-4/src/test/java/myprojects/automation/assignment4/tests/CreateProductTest.java
-/home/katya/lecture-4/src/test/java/myprojects/automation/assignment4/utils/logging/EventHandler.java
-/home/katya/lecture-4/src/test/java/myprojects/automation/assignment4/utils/Properties.java
-/home/katya/lecture-4/src/test/java/myprojects/automation/assignment4/utils/logging/CustomReporter.java
-/home/katya/lecture-4/src/test/java/myprojects/automation/assignment4/GeneralActions.java
-/home/katya/lecture-4/src/test/java/myprojects/automation/assignment4/BaseTest.java
-/home/katya/lecture-4/src/test/java/myprojects/automation/assignment4/model/ProductData.java
-/home/katya/lecture-4/src/test/java/myprojects/automation/assignment4/PageElementAction.java
+/home/katya/QATestLab4-master/src/test/java/myprojects/automation/assignment4/model/ProductData.java
+/home/katya/QATestLab4-master/src/test/java/myprojects/automation/assignment4/utils/logging/CustomReporter.java
+/home/katya/QATestLab4-master/src/test/java/myprojects/automation/assignment4/GeneralActions.java
+/home/katya/QATestLab4-master/src/test/java/myprojects/automation/assignment4/utils/Properties.java
+/home/katya/QATestLab4-master/src/test/java/myprojects/automation/assignment4/utils/logging/EventHandler.java
+/home/katya/QATestLab4-master/src/test/java/myprojects/automation/assignment4/BaseTest.java
+/home/katya/QATestLab4-master/src/test/java/myprojects/automation/assignment4/tests/CreateProductTest.java
